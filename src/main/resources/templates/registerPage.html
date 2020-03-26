@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css"
+          integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <title>Login</title>
+</head>
+<body>
+<div class="container-fluid" style="height: 100vh">
+    <div class="row justify-content-center align-items-center h-100 pb-5">
+        <div class="col col-sm-6 col-md-6 col-lg-4 col-xl-3 text-center p-5 border bg-light rounded shadow">
+            <form th:action="@{/register/submit}" th:method="post" th:object="${user}">
+                <h1 class="h2 mb-3">Please sign up</h1>
+                <p class="text-danger" th:if="${registrationErrorMessage != null}"
+                   th:text="${registrationErrorMessage}">Error</p>
+                <div class="form-group">
+                    <label for="inputFirstName" class="sr-only">First Name</label>
+                    <input th:class="${#fields.hasErrors('firstName')} ? 'form-control is-invalid' : 'form-control'"
+                           type="text" id="inputFirstName" th:field="*{firstName}"
+                           placeholder="First Name">
+                    <div th:if="${#fields.hasErrors('firstName')}"
+                         class="invalid-feedback"
+                         th:errors="*{firstName}">[errors]</div>
+                </div>
+                <div class="form-group">
+                    <label for="inputLastName" class="sr-only">Last Name</label>
+                    <input th:class="${#fields.hasErrors('lastName')} ? 'form-control is-invalid' : 'form-control'"
+                           type="text" id="inputLastName" th:field="*{lastName}"
+                           placeholder="Last Name">
+                    <div th:if="${#fields.hasErrors('lastName')}"
+                         class="invalid-feedback"
+                         th:errors="*{lastName}">[errors]</div>
+                </div>
+                <div class="form-group">
+                    <label for="inputAge" class="sr-only">Age</label>
+                    <input th:class="${#fields.hasErrors('age')} ? 'form-control is-invalid' : 'form-control'"
+                           type="number" id="inputAge" th:field="*{age}"
+                           placeholder="Age">
+                    <div th:if="${#fields.hasErrors('age')}"
+                         class="invalid-feedback"
+                         th:errors="*{age}">[errors]</div>
+                </div>
+                <div class="form-group">
+                    <label for="inputUserName" class="sr-only">User Name</label>
+                    <input th:class="${#fields.hasErrors('userName')} ? 'form-control is-invalid' : 'form-control'"
+                           type="text" id="inputUserName" th:field="*{userName}"
+                           placeholder="User Name">
+                    <div th:if="${#fields.hasErrors('userName')}"
+                         class="invalid-feedback"
+                         th:errors="*{userName}">[errors]</div>
+                </div>
+                <div class="form-group">
+                    <label for="inputPassword" class="sr-only">Password</label>
+                    <input th:class="${#fields.hasErrors('password')} ? 'form-control is-invalid' : 'form-control'"
+                           type="password" id="inputPassword" th:field="*{password}"
+                           placeholder="Password" required="">
+                    <div th:if="${#fields.hasErrors('password')}"
+                         class="invalid-feedback"
+                         th:errors="*{password}">[errors]</div>
+                </div>
+                <button type="submit" class="btn btn-lg btn-primary btn-block">Sign up</button>
+            </form>
+            <a th:href="@{/login}"
+               class="btn btn-lg btn-secondary btn-block mt-2">Already have account? Sing in</a>
+            <p class="mt-5 mb-3 text-muted">© 2019-2020</p>
+        </div>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+</body>
+</html>

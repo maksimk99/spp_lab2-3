@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.springframework.org/security/tags">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway:400,800">
+    <link rel='stylesheet' href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <title>Departments List</title>
+</head>
+<body>
+
+<header>
+    <nav class="pl-3 navbar fixed-top navbar-expand-sm navbar-dark bg-secondary pt-1 pb-0">
+        <a href="#" class="navbar-brand text-uppercase mr-auto">Employment Center</a>
+        <button class="navbar-toggler" data-toggle="collapse" data-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                <a th:href="@{/worker}" class="nav-item nav-link active" sec:authorize="hasAuthority('USER')">Worker page</a>
+                <a th:href="@{/logout}" class="nav-item nav-link" >Log out</a>
+            </ul>
+        </div>
+    </nav>
+</header>
+
+<section id="jobs">
+    <div class="table-responsive-sm pt-5">
+        <table class="table table-striped">
+            <thead class="thead-dark">
+            <tr>
+                <th>Id</th>
+                <th>Work type</th>
+                <th>City</th>
+                <th>Price</th>
+                <th>Employees required</th>
+                <th>Description</th>
+                <th class="text-right">
+                    <a th:href="@{/job}" sec:authorize="hasAuthority('ADMIN')"
+                       class="btn-sm btn-outline-light"
+                       title="Add job"
+                       data-toggle="tooltip"
+                       data-placement="bottom">
+                        <i class="fa fa-plus"></i> <span
+                            class="d-none d-sm-inline">Add</span>
+                    </a>
+                    <a th:href="@{/worker/job/quit}" sec:authorize="hasAuthority('USER')"
+                       class="btn-sm btn-outline-light"
+                       title="Quit current job"
+                       data-toggle="tooltip"
+                       data-placement="bottom">
+                        <i class="fa fa-remove"></i> <span
+                            class="d-none d-sm-inline">Quit current job</span>
+                    </a>
+                </th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="job : ${jobList}" th:if="${job.jobId != currentJob?.jobId}">
+                <td th:text="${job.jobId}">1</td>
+                <td th:text="${job.workType.workTypeName}">Painting</td>
+                <td th:text="${job.city.cityName}">Brest</td>
+                <td th:text="|${job.price}p.|">10.00p.</td>
+                <td th:text="${job.positionCount - job.occupiedCount}">1</td>
+                <td th:text="${job.description}">Good job</td>
+                <td class="text-right" sec:authorize="hasAuthority('ADMIN')">
+                    <a th:href="@{|/job/${job.jobId}|}"
+                       class="btn-sm btn-outline-secondary"
+                       title="Edit job"
+                       data-toggle="tooltip"
+                       data-placement="top">
+                        <i class="fa fa-pencil"></i> <span
+                            class="d-none d-md-inline">Edit</span></a>
+                    <span data-toggle="modal"
+                          data-target="#deleteDialog"
+                          th:attr="data-id=${job.jobId},data-type='delete'">
+                                <a href="#" class="btn-sm btn-outline-secondary"
+                                   title="delete course"
+                                   data-toggle="tooltip"
+                                   data-placement="top">
+                                    <i class="fa fa-remove"></i> <span class="d-none d-md-inline">Delete</span></a>
+                                </span>
+                </td>
+                <td class="text-right" sec:authorize="hasAuthority('USER')">
+                    <span data-toggle="modal"
+                          data-target="#deleteDialog"
+                          th:attr="data-id=${job.jobId},data-type='get'">
+                                <a href="#" class="btn-sm btn-outline-secondary"
+                                   title="delete course"
+                                   data-toggle="tooltip"
+                                   data-placement="top">
+                                    <i class="fa fa-plus"></i> <span class="d-none d-md-inline">Get job</span></a>
+                                </span>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</section>
+
+<footer>
+    <hr/>
+    <p class="text-center">&copy; 2020</p>
+</footer>
+
+<!-- Confirm delete Modal -->
+<div class="modal fade" id="deleteDialog" tabindex="-1" role="dialog"
+     aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header alert-danger">
+                <h5 class="modal-title" id="modalLabel">Modal label</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Modal body
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                <a id="modalUrl" href="#" class="btn btn-danger">Confirm</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+<script>
+    $(function () {
+        $('[data-toggle="tooltip"]').tooltip()
+    })
+    $('#deleteDialog').on('show.bs.modal', function (event) {
+        var target = $(event.relatedTarget)
+        if (target.data('type') === 'delete') {
+            $(this).find('.modal-body').text('Please confirm delete job with id = ' + target.data('id'));
+            $(this).find('.modal-title').text('Delete job');
+            document.getElementById('modalUrl').href = '/job/' + target.data('id') + '/delete';
+        } else if (target.data('type') === 'get') {
+            $(this).find('.modal-body').text('Are you sure you want to get job with id = ' + target.data('id'));
+            $(this).find('.modal-title').text('Get job');
+            document.getElementById('modalUrl').href = '/worker/job/' + target.data('id') + '/get';
+        }
+    })
+</script>
+</body>
+</html>
